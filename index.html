@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>eddyveutuneclaque</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f8f8f8;
+      display: flex;
+      justify-content: space-between; /* left and right sections */
+      align-items: flex-start;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 50px;
+      height: 100vh;
+    }
+
+    /* Left section - prank */
+    .left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #222;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background-color: #c0392b;
+      transform: scale(1.05);
+    }
+
+    .popup {
+      margin-top: 20px;
+      font-size: 2rem;
+      color: #c0392b;
+      display: none;
+    }
+
+    /* Right section - questions */
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 300px;
+    }
+
+    .question {
+      font-size: 1.5rem;
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    .choice {
+      margin-bottom: 10px;
+    }
+
+    .choice button {
+      margin-right: 10px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .choice button:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+
+    .response {
+      margin-top: 10px;
+      color: #c0392b;
+      font-size: 1.3rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left prank section -->
+  <div class="left">
+    <h1>eddy<br>Tu veux une claque ?</h1>
+    <button class="btn" id="clapBtn">Clique moi 😏</button>
+    <div class="popup" id="popupText">une claque pour toi!</div>
+  </div>
+
+  <!-- Right interactive questions -->
+  <div class="right">
+    <div class="question" id="q1">Question : Voudrait-tu une grosse claque?</div>
+    <div class="choice" id="choices1">
+      <button id="ouiBtn">Oui bien-sur!</button>
+      <button id="nonBtn">Ah non clairement pas</button>
+    </div>
+    <div class="response" id="respOui">tu en auras un demain</div>
+
+    <div class="question" id="q2" style="display:none;">Es-tu sur de toi?</div>
+    <div class="choice" id="choices2" style="display:none;">
+      <button id="r2Btn1">je ne suis pas sur</button>
+      <button id="r2Btn2">je ne suis pas sur</button>
+    </div>
+  </div>
+
+  <script>
+    // Left prank button
+    const btn = document.getElementById('clapBtn');
+    const popup = document.getElementById('popupText');
+
+    btn.addEventListener('click', () => {
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 2000);
+    });
+
+    // Right questions logic
+    const ouiBtn = document.getElementById('ouiBtn');
+    const nonBtn = document.getElementById('nonBtn');
+    const respOui = document.getElementById('respOui');
+
+    const q2 = document.getElementById('q2');
+    const choices2 = document.getElementById('choices2');
+    const r2Btn1 = document.getElementById('r2Btn1');
+    const r2Btn2 = document.getElementById('r2Btn2');
+
+    const choices1 = document.getElementById('choices1');
+
+    // If he chooses "Oui bien-sur!"
+    ouiBtn.addEventListener('click', () => {
+      respOui.style.display = 'block';
+      setTimeout(() => {
+        respOui.style.display = 'none';
+      }, 3000);
+      // hide first choices to prevent multiple clicks
+      choices1.style.display = 'none';
+    });
+
+    // If he chooses "Ah non clairement pas"
+    nonBtn.addEventListener('click', () => {
+      choices1.style.display = 'none';
+      q2.style.display = 'block';
+      choices2.style.display = 'flex';
+    });
+
+    // Any choice in second question makes it disappear
+    r2Btn1.addEventListener('click', () => {
+      q2.style.display = 'none';
+      choices2.style.display = 'none';
+    });
+    r2Btn2.addEventListener('click', () => {
+      q2.style.display = 'none';
+      choices2.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>
