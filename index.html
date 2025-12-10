@@ -1,176 +1,264 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>eddyveutuneclaque</title>
-  <style>
-    body {
-      margin: 0;
-      background: #f8f8f8;
-      display: flex;
-      justify-content: space-between; /* left and right sections */
-      align-items: flex-start;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 50px;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>eddyveutuneclaque</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    margin: 0;
+    background: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+  }
 
-    /* Left section - prank */
-    .left {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  h1 {
+    font-size: 2.8rem;
+    color: #222;
+    margin-bottom: 20px;
+  }
 
-    h1 {
-      font-size: 2.8rem;
-      color: #222;
-      line-height: 1.4;
-      margin-bottom: 30px;
-    }
+  .btn-red {
+    padding: 14px 28px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
 
-    .btn {
-      padding: 14px 28px;
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      margin-bottom: 10px;
-    }
+  .btn-red:hover {
+    background-color: #c0392b;
+  }
 
-    .btn:hover {
-      background-color: #c0392b;
-      transform: scale(1.05);
-    }
+  .popup {
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #c0392b;
+    display: none;
+  }
 
-    .popup {
-      margin-top: 20px;
-      font-size: 2rem;
-      color: #c0392b;
-      display: none;
-    }
+  .right {
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    /* Right section - questions */
-    .right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      max-width: 300px;
-    }
+  .question {
+    font-size: 1.4rem;
+    color: #222;
+    margin-bottom: 10px;
+  }
 
-    .question {
-      font-size: 1.5rem;
-      color: #222;
-      margin-bottom: 10px;
-    }
+  .choices button {
+    margin: 5px 10px 5px 0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    transition: background 0.2s;
+  }
 
-    .choice {
-      margin-bottom: 10px;
-    }
+  .choices button:hover {
+    background-color: #2980b9;
+  }
 
-    .choice button {
-      margin-right: 10px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      background-color: #3498db;
-      color: white;
-      transition: background 0.3s, transform 0.2s;
-    }
+  .response {
+    font-size: 1.3rem;
+    color: #c0392b;
+    margin-top: 10px;
+    display: none;
+  }
 
-    .choice button:hover {
-      background-color: #2980b9;
-      transform: scale(1.05);
-    }
+  /* moving button (orange) */
+  #trickyBtn {
+    position: absolute;
+    top: 250px;
+    left: 50px;
+    padding: 14px 50px;
+    font-size: 1.3rem;
+    border-radius: 12px;
+    border: none;
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+    transition: left 0.2s ease, top 0.2s ease;
+  }
 
-    .response {
-      margin-top: 10px;
-      color: #c0392b;
-      font-size: 1.3rem;
-      display: none;
-    }
-  </style>
+  #choices2 {
+    display: none;
+    flex-direction: column;
+  }
+
+  /* Fake Windows-style scary error */
+  #fakeError {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 25px;
+    background: #8B0000; /* blood red */
+    border: 4px solid #000;
+    box-shadow: 5px 5px 20px #000;
+    font-family: 'Tahoma', sans-serif;
+    z-index: 1000;
+    color: #fff;
+    text-align: center;
+  }
+
+  #fakeError h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px #000;
+  }
+
+  #fakeError p {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  #fakeError button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  #fakeError button:hover {
+    background: #333;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Left prank section -->
-  <div class="left">
-    <h1>eddy<br>Tu veux une claque ?</h1>
-    <button class="btn" id="clapBtn">Clique moi 😏</button>
-    <div class="popup" id="popupText">une claque pour toi!</div>
+<div class="left">
+  <h1>eddy<br>Tu veux une claque ?</h1>
+  <button class="btn-red" id="clapBtn" type="button">Clique moi</button>
+  <div class="popup" id="popupText">une claque pour toi!</div>
+</div>
+
+<div class="right">
+  <div class="question" id="q1">Question : Voudrait-tu une grosse claque?</div>
+  <div class="choices" id="choices1">
+    <button id="ouiBtn" type="button">appuye ici pour etre drole</button>
+    <button id="nonBtn" type="button">Ah non clairement pas</button>
   </div>
 
-  <!-- Right interactive questions -->
-  <div class="right">
-    <div class="question" id="q1">Question : Voudrait-tu une grosse claque?</div>
-    <div class="choice" id="choices1">
-      <button id="ouiBtn">Oui bien-sur!</button>
-      <button id="nonBtn">Ah non clairement pas</button>
-    </div>
-    <div class="response" id="respOui">tu en auras un demain</div>
+  <div class="response" id="respOui">tu en auras un demain</div>
 
-    <div class="question" id="q2" style="display:none;">Es-tu sur de toi?</div>
-    <div class="choice" id="choices2" style="display:none;">
-      <button id="r2Btn1">je ne suis pas sur</button>
-      <button id="r2Btn2">je ne suis pas sur</button>
-    </div>
+  <div class="question" id="q2" style="display:none;">Es-tu sur de toi?</div>
+  <div class="choices" id="choices2" style="display:none;">
+    <button id="r2Btn1" type="button">je ne suis pas sur</button>
+    <button id="r2Btn2" type="button">je ne suis pas sur</button>
   </div>
+</div>
 
-  <script>
-    // Left prank button
-    const btn = document.getElementById('clapBtn');
-    const popup = document.getElementById('popupText');
+<!-- Orange moving button -->
+<button id="trickyBtn">appuye ici pour etre drole</button>
 
-    btn.addEventListener('click', () => {
-      popup.style.display = 'block';
-      setTimeout(() => {
-        popup.style.display = 'none';
-      }, 2000);
-    });
+<!-- Blood-red scary error -->
+<div id="fakeError">
+  <h2>Fatal Error</h2>
+  <p>eddy est genant</p>
+  <button onclick="document.getElementById('fakeError').style.display='none'">Close</button>
+</div>
 
-    // Right questions logic
-    const ouiBtn = document.getElementById('ouiBtn');
-    const nonBtn = document.getElementById('nonBtn');
-    const respOui = document.getElementById('respOui');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Red button
+  const clapBtn = document.getElementById('clapBtn');
+  const popupText = document.getElementById('popupText');
 
-    const q2 = document.getElementById('q2');
-    const choices2 = document.getElementById('choices2');
-    const r2Btn1 = document.getElementById('r2Btn1');
-    const r2Btn2 = document.getElementById('r2Btn2');
+  // Q&A
+  const q1 = document.getElementById('q1');
+  const choices1 = document.getElementById('choices1');
+  const ouiBtn = document.getElementById('ouiBtn');
+  const nonBtn = document.getElementById('nonBtn');
+  const respOui = document.getElementById('respOui');
 
-    const choices1 = document.getElementById('choices1');
+  const q2 = document.getElementById('q2');
+  const choices2 = document.getElementById('choices2');
+  const r2Btn1 = document.getElementById('r2Btn1');
+  const r2Btn2 = document.getElementById('r2Btn2');
 
-    // If he chooses "Oui bien-sur!"
-    ouiBtn.addEventListener('click', () => {
-      respOui.style.display = 'block';
-      setTimeout(() => {
-        respOui.style.display = 'none';
-      }, 3000);
-      // hide first choices to prevent multiple clicks
-      choices1.style.display = 'none';
-    });
+  // Orange moving button
+  const trickyBtn = document.getElementById('trickyBtn');
+  let direction = 0;
+  const moveRight = 240;
+  const moveLeft = 240;
+  const moveVert = 150;
 
-    // If he chooses "Ah non clairement pas"
-    nonBtn.addEventListener('click', () => {
-      choices1.style.display = 'none';
-      q2.style.display = 'block';
-      choices2.style.display = 'flex';
-    });
+  trickyBtn.style.left = trickyBtn.offsetLeft + "px";
+  trickyBtn.style.top = trickyBtn.offsetTop + "px";
 
-    // Any choice in second question makes it disappear
-    r2Btn1.addEventListener('click', () => {
-      q2.style.display = 'none';
-      choices2.style.display = 'none';
-    });
-    r2Btn2.addEventListener('click', () => {
-      q2.style.display = 'none';
-      choices2.style.display = 'none';
-    });
-  </script>
+  trickyBtn.addEventListener('mouseenter', () => {
+    let currentLeft = parseInt(trickyBtn.style.left);
+    let currentTop = parseInt(trickyBtn.style.top);
+    switch(direction){
+      case 0: trickyBtn.style.left = currentLeft + moveRight + 'px'; break;
+      case 1: trickyBtn.style.top = currentTop + moveVert + 'px'; break;
+      case 2: trickyBtn.style.left = currentLeft - moveLeft + 'px'; break;
+      case 3: trickyBtn.style.top = currentTop - moveVert + 'px'; break;
+    }
+    direction = (direction + 1) % 4;
+  });
+
+  // Click orange button → blood-red scary error
+  trickyBtn.addEventListener('click', () => {
+    document.getElementById('fakeError').style.display = 'block';
+  });
+
+  // Red button click
+  clapBtn.addEventListener('click', () => {
+    popupText.style.display = 'block';
+    setTimeout(() => { popupText.style.display = 'none'; }, 2000);
+  });
+
+  // Q&A logic
+  ouiBtn.addEventListener('click', () => {
+    choices1.style.display = 'none';
+    respOui.style.display = 'block';
+    setTimeout(() => {
+      respOui.style.display = 'none';
+      choices1.style.display = 'block';
+    }, 3000);
+  });
+
+  nonBtn.addEventListener('click', () => {
+    choices1.style.display = 'none';
+    q2.style.display = 'block';
+    choices2.style.display = 'flex';
+    choices2.style.flexDirection = 'column';
+  });
+
+  function restart() {
+    q2.style.display = 'none';
+    choices2.style.display = 'none';
+    q1.style.display = 'block';
+    choices1.style.display = 'block';
+  }
+
+  r2Btn1.addEventListener('click', restart);
+  r2Btn2.addEventListener('click', restart);
+});
+</script>
 
 </body>
 </html>
